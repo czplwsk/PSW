@@ -9,14 +9,16 @@ int main(int argc,char* argv[]){
   if(fork()==0)
   {
     close(fd[0]);
-    dup2(1,fd[1]);
+    dup2(fd[1],1);
     execlp("ls","ls",NULL);
+    close(fd[1]);
   }
   else
   {
     close(fd[1]);
-    dup2(0,fd[0]);
+    dup2(fd[0],0);
     execlp("wc","wc",NULL);
+    close(fd[0]);
   }
 
   return 0;
